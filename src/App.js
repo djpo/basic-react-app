@@ -1,63 +1,67 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 import logo from './logo.svg';
 import './App.css';
 
 
 function App() {
-  const [response, setResponse] = useState("(none)");
+  const [apiData, setApiData] = useState(null);
   const [error, setError] = useState("(none)");
   const [isLoading, setIsLoading] = useState(true);
 
-  const params = {
-    method: "GET",
-    url: "https://poppe.club/api",
-  };
+  const fetchData = () => {
+    // const fetchUrl = "https://poppe.club/api";
+    const fetchUrl = "http://localhost:5000/api";
+    // const fetchUrl = "https://pokeapi.co/api/v2/pokemon/pikachu/";
 
-  const fetchData = async (params) => {
     try {
+      // // 1. axios
       // const result = await axios.request(params);
       // console.log(result);
       // setResponse(result.message);
 
-
+      // // 2. fetch, .then
       // fetch("https://pokeapi.co/api/v2/pokemon/pikachu/")
       //   .then(response => response.json())
       //     .then(result => {
-      //       // console.log("result:");
-      //       // console.log(result);
-      //       // console.log(result.species.name);
-      //       // console.log("result.species.name:");
       //       setResponse(result.species.name);
       //     });
 
+      fetch(fetchUrl)
+        .then(response => {
+          console.log("response:");
+          console.log(response);
+          return response.json();
+        })
+        .then(data => {
+          console.log("data:");
+          console.log(data);
+          setApiData(data);
+        });
 
-      fetch("https://poppe.club/api/", {
-        method: 'GET',
-        // withCredentials: true,
-        crossorigin: true,
-        mode: 'no-cors',
-      })
-        .then(response => response.json())
-          .then(result => {
-            console.log("result:");
-            console.log(result);
-            // console.log(result.species.name);
-            // console.log("result.species.name:");
-            // setResponse(result.species.name);
-          });
+
+      // // 3. async await
+      // const response = await fetch(fetchUrl);
+      // console.log("response:");
+      // console.log(response);
+
+      // const data = await response.json();
+      // console.log("data:");
+      // console.log(data);
 
     } catch (err) {
-      console.log("err!");
+      console.log("err:");
       console.log(err);
       setError(err);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
   };
 
   useEffect(() => {
-    fetchData(params);
+    fetchData();
   }, []);
 
   return (
@@ -65,30 +69,17 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
 
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h2>basic-react-app</h2>
+        <h5>connect to remote express server</h5>
 
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>{isLoading
+          ? <span style={{color: 'orange'}}>loading</span>
+          : <span style={{color: 'lightblue'}}>not loading</span>
+        }</p>
 
-        <p>
-          response: {response}
-        </p>
+        <p>apiData: {apiData?.message}</p>
 
-        <p>
-          error: {error}
-        </p>
-
-        <p>
-          isLoading: {isLoading ? "true" : "false"}
-        </p>
+        <p>error: {error}</p>
       </header>
     </div>
   );
