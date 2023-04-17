@@ -10,8 +10,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = () => {
-    // const fetchUrl = "https://poppe.club/api";
-    const fetchUrl = "http://localhost:5000/api";
+    const fetchUrl = "https://poppe.club/api";
+    // const fetchUrl = "http://localhost:5000/api";
     // const fetchUrl = "https://pokeapi.co/api/v2/pokemon/pikachu/";
 
     try {
